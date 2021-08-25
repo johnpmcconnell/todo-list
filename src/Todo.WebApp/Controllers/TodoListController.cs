@@ -1,6 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Todo.WebApp.Models;
+using Todo.WebApp.DataModels;
 
 namespace Todo.WebApp.Controllers
 {
