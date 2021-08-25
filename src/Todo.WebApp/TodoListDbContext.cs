@@ -3,6 +3,7 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Todo.WebApp.DbModels;
 
 #nullable disable
 
@@ -18,6 +19,9 @@ namespace Todo.WebApp
 
     public partial class TodoListDbContext : DbContext
     {
+        public DbSet<TodoList> TodoLists { get; set; }
+        public DbSet<TodoListItem> TodoListItems { get; set; }
+
         public TodoListDbContext()
         {
         }
@@ -29,9 +33,22 @@ namespace Todo.WebApp
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            const string connStrEnvVar = "TODOLISTDB";
             if (!optionsBuilder.IsConfigured)
             {
-                string connStr = Environment.GetEnvironmentVariable("TODOLISTDB");
+                string connStr = Environment.GetEnvironmentVariable(connStrEnvVar);
+
+                // Because we're appending the connection string, we need to validate
+                // it's not empty ourselves
+                if (String.IsNullOrEmpty(connStr))
+                {
+                    throw new InvalidOperationException($"Connection string is empty. Set {connStrEnvVar} environment variable.");
+                }
+
+                // SQLite does not enforce FK constraints by default.
+                // Do not depend on configuring user to enable them.
+                // Equivalent to executing PRAGMA foreign_keys = ON
+                connStr += ";" + "Foreign Keys=true";
                 optionsBuilder.UseSqlite(connStr);
             }
         }
@@ -39,6 +56,14 @@ namespace Todo.WebApp
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnModelCreatingPartial(modelBuilder);
+
+            modelBuilder.Entity<TodoListItem>(eb =>
+            {
+                eb.HasOne<TodoList>()
+                    .WithMany()
+                    .HasForeignKey(c => c.TodoListId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
