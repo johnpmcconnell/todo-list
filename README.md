@@ -8,18 +8,30 @@ This project is designed for development in an environment with the following to
 
   * Visual Studio Code (<https://code.visualstudio.com/>) (with C# extension <https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp>)
   * .NET 5.0 SDK (<https://dotnet.microsoft.com/download>)
+  * PowerShell 5 or greater (may be used within VS Code or outside it)
 
-## Commands
+## Setup
 
-Common tasks are mostly performed in PowerShell. Before the commands below can be used,
-you must initialize the environment by invoking the `env.ps1` script:
+Before the application can be run or any commands can be executed, you must initialize
+the environment by invoking the `env.ps1` script in PowerShell:
 
 ```
 PS> .\env.ps1
 ```
 
-This will set up the required environment variables and push the web app source directory
-onto the location stack (setting the current directory).
+This performs several necessary tasks:
+
+  * Sets environment variables the application requires (such as database connection
+    string)
+  * Sets the current working directory to the web application project, allowing
+    `dotnet` commands to find the project by default. (`Push-Location` is used to
+    change the working directory, so `Pop-Location` may be used to return to the
+    previous working directory.)
+  * Creates the `.env` file required by the application launch configuration.
+
+## Commands
+
+Common tasks are mostly performed in PowerShell.
 
 ### Database
 
