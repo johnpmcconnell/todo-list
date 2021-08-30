@@ -14,18 +14,23 @@ namespace Todo.WebApp.Controllers
             this.Db = db;
         }
 
-        [HttpGet]
-        [Route("list/{listId}")]
-        public IActionResult Get(int listId)
+        public static TodoList FetchList(TodoListDbContext db, int listId)
         {
-            var list = this.Db.TodoLists.Find(listId);
-            var items = this.Db.TodoListItems.Where(i => i.TodoListId == listId);
+            var list = db.TodoLists.Find(listId);
+            var items = db.TodoListItems.Where(i => i.TodoListId == listId);
 
-            return this.Ok(new TodoList(
+            return new TodoList(
                 listId,
                 list.Title,
                 items.Select(i => i.ItemDescription)
-            ));
+            );
+        }
+
+        [HttpGet]
+        [Route("list/{listId}")]
+        public IActionResult ApiGet(int listId)
+        {
+            return this.Ok(FetchList(this.Db, listId));
         }
     }
 }
