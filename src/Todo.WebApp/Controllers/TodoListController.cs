@@ -28,6 +28,15 @@ namespace Todo.WebApp.Controllers
 
         [HttpGet]
         [Route("list/{listId}")]
+        public IActionResult Get(int listId)
+        {
+            var list = FetchList(this.Db, listId);
+
+            return this.View("TodoList", list);
+        }
+
+        [HttpGet]
+        [Route("api/list/{listId}")]
         public IActionResult ApiGet(int listId)
         {
             return this.Ok(FetchList(this.Db, listId));

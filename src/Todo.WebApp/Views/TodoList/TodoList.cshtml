@@ -1,0 +1,17 @@
+@model Todo.WebApp.DataModels.TodoList
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo List - @Model.Title</title>
+    </head>
+    <body>
+        <h1>@Model.Title</h1>
+        <ul>
+            @foreach (string item in Model.Items)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </body>
+</html>
