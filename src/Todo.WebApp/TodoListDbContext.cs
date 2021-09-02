@@ -19,8 +19,8 @@ namespace Todo.WebApp
 
     public partial class TodoListDbContext : DbContext
     {
-        public DbSet<TodoList> TodoLists { get; set; }
-        public DbSet<TodoListItem> TodoListItems { get; set; }
+        public DbSet<DbTodoList> TodoLists { get; set; }
+        public DbSet<DbTodoListItem> TodoListItems { get; set; }
 
         public TodoListDbContext()
         {
@@ -57,9 +57,9 @@ namespace Todo.WebApp
         {
             OnModelCreatingPartial(modelBuilder);
 
-            modelBuilder.Entity<TodoListItem>(eb =>
+            modelBuilder.Entity<DbTodoListItem>(eb =>
             {
-                eb.HasOne<TodoList>()
+                eb.HasOne<DbTodoList>()
                     .WithMany()
                     .HasForeignKey(c => c.TodoListId)
                     .OnDelete(DeleteBehavior.Restrict);

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Todo.WebApp.DbModels
 {
     [Table("todo_list_item")]
-    public class TodoListItem
+    public class DbTodoListItem
     {
         [Column("todo_list_item_id")]
         [Key]
@@ -20,13 +20,15 @@ namespace Todo.WebApp.DbModels
         public string ItemDescription { get; private set; }
 
         // Required for Entity Framework
-        private TodoListItem() { }
+        private DbTodoListItem() { }
 
-        public TodoListItem(int todoListItemId, int todoListId, string itemDescription)
+        public static DbTodoListItem ForInsert(
+            int todoListId,
+            string itemDescription
+        ) => new DbTodoListItem()
         {
-            this.TodoListItemId = todoListItemId;
-            this.TodoListId = todoListId;
-            this.ItemDescription = itemDescription;
-        }
+            TodoListId = todoListId,
+            ItemDescription = itemDescription
+        };
     }
 }

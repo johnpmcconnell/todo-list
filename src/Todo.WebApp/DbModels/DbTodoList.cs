@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Todo.WebApp.DbModels
 {
     [Table("todo_list")]
-    public class TodoList
+    public class DbTodoList
     {
         [Column("todo_list_id")]
         [Key]
@@ -15,12 +15,11 @@ namespace Todo.WebApp.DbModels
         public string Title { get; private set; }
 
         // Required for Entity Framework
-        private TodoList() { }
+        private DbTodoList() { }
 
-        public TodoList(int todoListId, string title)
+        public static DbTodoList ForInsert(string title) => new DbTodoList()
         {
-            this.TodoListId = todoListId;
-            this.Title = title;
-        }
+            Title = title
+        };
     }
 }
