@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Todo.WebApp.DataModels;
+using Todo.WebApp.DbQueries;
 
 namespace Todo.WebApp.Controllers
 {
@@ -14,23 +14,11 @@ namespace Todo.WebApp.Controllers
             this.Db = db;
         }
 
-        public static TodoList FetchList(TodoListDbContext db, int listId)
-        {
-            var list = db.TodoLists.Find(listId);
-            var items = db.TodoListItems.Where(i => i.TodoListId == listId);
-
-            return new TodoList(
-                listId,
-                list.Title,
-                items.Select(i => i.ItemDescription)
-            );
-        }
-
         [HttpGet]
         [Route("list/{listId}")]
         public IActionResult Get(int listId)
         {
-            var list = FetchList(this.Db, listId);
+            var list = this.Db.FetchList(listId);
 
             return this.View("TodoList", list);
         }
@@ -39,7 +27,7 @@ namespace Todo.WebApp.Controllers
         [Route("api/list/{listId}")]
         public IActionResult ApiGet(int listId)
         {
-            return this.Ok(FetchList(this.Db, listId));
+            return this.Ok(this.Db.FetchList(listId));
         }
     }
 }
