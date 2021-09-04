@@ -1,0 +1,67 @@
+@{
+    void ListItemHtml()
+    {
+        <div class="itemContainer">
+            <input name="items[]" type="text">
+            <button class="addItemButton" type="button">+</button>
+            <button class="removeItemButton" type="button">-</button>
+        </div>
+    }
+}
+
+<html>
+    <head>
+        <title>Todo List - Create New</title>
+        <style>
+            form > * {
+                display: block;
+            }
+        </style>
+        <script>
+            function addItem(event) {
+                let itemContainer = event.target.closest(".itemContainer");
+
+                if (null !== itemContainer) {
+                    let template = document.getElementById("todo-item-template");
+
+                    let newItem = template.content.querySelector('.itemContainer').cloneNode(true);
+                    setOnClick(newItem);
+
+                    itemContainer.after(newItem);
+                }
+            }
+
+            function removeItem(event) {
+                let itemContainer = event.target.closest(".itemContainer");
+
+                if (null !== itemContainer) {
+                    itemContainer.remove();
+                }
+            }
+
+            function setOnClick(listItemElementContainer) {
+                let add = Array.from(listItemElementContainer.getElementsByClassName("addItemButton"));
+                let remove = Array.from(listItemElementContainer.getElementsByClassName("removeItemButton"));
+
+                add.forEach(a => a.addEventListener('click', addItem));
+                remove.forEach(r => r.addEventListener('click', removeItem));
+            }
+        </script>
+        <template id="todo-item-template">
+            @{ ListItemHtml(); }
+        </template>
+    </head>
+    <body>
+        <form id="createList" method="POST">
+            <label for="title">Title</label>
+            <input name="title" type="text">
+            <label>Items</label>
+            @{ ListItemHtml(); }
+            <input type="submit" value="Create">
+        </form>
+
+        <script>
+            setOnClick(document.getElementById("createList"));
+        </script>
+    </body>
+</html>

@@ -19,5 +19,33 @@ namespace Todo.WebApp.DbQueries
                 items.Select(i => i.ItemDescription)
             );
         }
+
+        public static DataModels.TodoList CreateList(
+            this TodoListDbContext db,
+            string title,
+            IEnumerable<string> items
+        )
+        {
+            var dbList = DbTodoList.ForInsert(title);
+
+            db.TodoLists.Add(dbList);
+            db.SaveChanges();
+
+            var dbItems = items
+                .Select(item => DbTodoListItem.ForInsert(dbList.TodoListId, item))
+                // Must materialize NOW
+                // Otherwise iteration will create new instances, which will not
+                // have the updated ID values after INSERT.
+                .ToList();
+
+            db.TodoListItems.AddRange(dbItems);
+            db.SaveChanges();
+
+            return new TodoList(
+                dbList.TodoListId,
+                dbList.Title,
+                dbItems.Select(i => i.ItemDescription)
+            );
+        }
     }
 }

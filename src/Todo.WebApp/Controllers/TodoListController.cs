@@ -15,6 +15,7 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpGet]
+        [ActionName(HtmlRouteActionNames.TodoListGet)]
         [Route("list/{listId}")]
         public IActionResult Get(int listId)
         {
@@ -24,10 +25,55 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpGet]
+        [Route("list/create")]
+        public IActionResult Create()
+        {
+            return this.View("TodoListCreate");
+        }
+
+        [HttpPost]
+        [Route("list/create")]
+        public IActionResult Create(string title, string[] items)
+        {
+            using (var trans = this.Db.Database.BeginTransaction())
+            {
+                var list = this.Db.CreateList(title, items);
+                // Create result before commit in case of error
+                var result = this.RedirectRetrieveToAction(
+                    HtmlRouteActionNames.TodoListGet,
+                    new { listId = list.Id }
+                );
+                trans.Commit();
+                return result;
+            }
+        }
+
+        [HttpGet]
+        [ActionName(ApiRouteActionNames.TodoListGet)]
         [Route("api/list/{listId}")]
         public IActionResult ApiGet(int listId)
         {
             return this.Ok(this.Db.FetchList(listId));
+        }
+
+        [HttpPost]
+        [Route("api/list/create")]
+        public IActionResult ApiCreate(string title, string[] items)
+        {
+            using (var trans = this.Db.Database.BeginTransaction())
+            {
+                var list = this.Db.CreateList(title, items);
+                // Create result before commit in case of error
+                var result = this.Created(
+                    this.Url.Action(
+                        ApiRouteActionNames.TodoListGet,
+                        new { listId = list.Id }
+                    ),
+                    list
+                );
+                trans.Commit();
+                return result;
+            }
         }
     }
 }
