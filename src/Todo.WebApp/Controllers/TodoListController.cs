@@ -64,11 +64,9 @@ namespace Todo.WebApp.Controllers
             {
                 var list = this.Db.CreateList(title, items);
                 // Create result before commit in case of error
-                var result = this.Created(
-                    this.Url.Action(
-                        ApiRouteActionNames.TodoListGet,
-                        new { listId = list.Id }
-                    ),
+                var result = this.CreatedAtAction(
+                    ApiRouteActionNames.TodoListGet,
+                    new { listId = list.Id },
                     list
                 );
                 trans.Commit();
