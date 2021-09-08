@@ -1,7 +1,9 @@
 using System;
+using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Todo.WebApp.DataModels;
 
 namespace Todo.WebApp.Controllers
 {
@@ -23,6 +25,17 @@ namespace Todo.WebApp.Controllers
         )
         {
             return c.RedirectRetrieve(c.Url.Action(action, routeValues));
+        }
+
+        public static IActionResult ErrorView(
+            this Controller c,
+            HttpStatusCode code,
+            ErrorResponse model
+        )
+        {
+            var response = c.View("~/Views/Errors/GenericError.cshtml", model);
+            response.StatusCode = (int)code;
+            return response;
         }
     }
 }

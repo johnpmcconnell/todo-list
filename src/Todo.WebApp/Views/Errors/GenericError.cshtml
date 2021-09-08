@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.WebUtilities
+@model Todo.WebApp.DataModels.ErrorResponse
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Todo List -
+            @if (ViewData.ContainsKey("title")) {
+                @ViewData["title"]
+            }
+            else {
+                @ReasonPhrases.GetReasonPhrase((int)Context.Response.StatusCode)
+            }
+        </title>
+    </head>
+    <body>
+        @if(Model.Errors.Count > 1) {
+            <p>There were several problems with your request:</p>
+            <ul>
+                @foreach (var err in Model.Errors)
+                {
+                    <li>@err</li>
+                }
+            </ul>
+        }
+        else {
+            <p>There was a problem with your request:</p>
+            <p>@Model.Errors[0]</p>
+        }
+    </body>
+</html>

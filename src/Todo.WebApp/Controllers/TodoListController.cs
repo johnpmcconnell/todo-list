@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Todo.WebApp.DataModels;
 using Todo.WebApp.DbQueries;
 
 namespace Todo.WebApp.Controllers
@@ -20,6 +22,15 @@ namespace Todo.WebApp.Controllers
         public IActionResult Get(int listId)
         {
             var list = this.Db.FetchList(listId);
+
+            if (null == list)
+            {
+                // this.ViewData["title"] = "Not found";
+                return this.ErrorView(
+                    HttpStatusCode.NotFound,
+                    new ErrorResponse("This todo list does not exist")
+                );
+            }
 
             return this.View("TodoList", list);
         }
@@ -53,7 +64,14 @@ namespace Todo.WebApp.Controllers
         [Route("api/list/{listId}")]
         public IActionResult ApiGet(int listId)
         {
-            return this.Ok(this.Db.FetchList(listId));
+            var list = this.Db.FetchList(listId);
+
+            if (null == list)
+            {
+                return this.NotFound(new ErrorResponse($"Todo list with ID {listId} not found"));
+            }
+
+            return this.Ok(list);
         }
 
         [HttpPost]

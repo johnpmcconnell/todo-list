@@ -11,6 +11,12 @@ namespace Todo.WebApp.DbQueries
         public static TodoList FetchList(this TodoListDbContext db, int listId)
         {
             var list = db.TodoLists.Find(listId);
+
+            if (null == list)
+            {
+                return null;
+            }
+
             var items = db.TodoListItems.Where(i => i.TodoListId == listId);
 
             return new TodoList(
