@@ -9,7 +9,7 @@ namespace Todo.WebApp.DataModels
     {
         public int Id { get; }
         public string Title { get; }
-        public ReadOnlyCollection<string> Items { get; }
+        public IReadOnlyList<string> Items { get; }
 
         public TodoList(int id, string title, IEnumerable<string> items)
         {
@@ -20,7 +20,7 @@ namespace Todo.WebApp.DataModels
 
             if (items == null)
             {
-                items = new List<string>();
+                items = Enumerable.Empty<string>();
             }
 
             this.Id = id;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -6,9 +7,9 @@ namespace Todo.WebApp.DataModels
 {
     public class ErrorResponse
     {
-        public ReadOnlyCollection<string> Errors { get; }
+        public IReadOnlyList<string> Errors { get; }
 
-        public ErrorResponse(params string[] errorMessages)
+        public ErrorResponse(IEnumerable<string> errorMessages)
         {
             if (null == errorMessages)
             {
@@ -25,7 +26,11 @@ namespace Todo.WebApp.DataModels
                 throw new ArgumentException("At least 1 error required");
             }
 
-            this.Errors = new ReadOnlyCollection<string>(errorMessages);
+            this.Errors = new ReadOnlyCollection<string>(errorMessages.ToArray());
         }
+
+        public ErrorResponse(params string[] errorMessages)
+            : this((IEnumerable<string>)errorMessages)
+        { }
     }
 }
