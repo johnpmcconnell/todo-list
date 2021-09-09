@@ -8,6 +8,8 @@ namespace Todo.WebApp.Controllers
 {
     public class TodoListController : Controller
     {
+        private const string ListIdPattern = "{listId:int:min(1)}";
+
         private TodoListDbContext Db { get; }
 
         public TodoListController(TodoListDbContext db)
@@ -17,7 +19,7 @@ namespace Todo.WebApp.Controllers
 
         [HttpGet]
         [ActionName(HtmlRouteActionNames.TodoListGet)]
-        [Route("list/{listId}")]
+        [Route("list/" + ListIdPattern)]
         public IActionResult Get(int listId)
         {
             var list = this.Db.FetchList(listId);
@@ -56,7 +58,7 @@ namespace Todo.WebApp.Controllers
 
         [HttpGet]
         [ActionName(ApiRouteActionNames.TodoListGet)]
-        [Route("api/list/{listId}")]
+        [Route("api/list/" + ListIdPattern)]
         public IActionResult ApiGet(int listId)
         {
             var list = this.Db.FetchList(listId);
