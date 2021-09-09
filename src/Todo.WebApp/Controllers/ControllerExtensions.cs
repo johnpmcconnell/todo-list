@@ -37,5 +37,33 @@ namespace Todo.WebApp.Controllers
             response.StatusCode = (int)code;
             return response;
         }
+
+        private const string NotFoundDescription = "This location does not exist";
+
+        public static IActionResult NotFoundView(
+            this Controller c,
+            string description=null
+        )
+        {
+            if (String.IsNullOrEmpty(description))
+            {
+                description = NotFoundDescription;
+            }
+
+            return c.ErrorView(HttpStatusCode.NotFound, new ErrorResponse(description));
+        }
+
+        public static IActionResult NotFoundObject(
+            this ControllerBase c,
+            string description=null
+        )
+        {
+            if (String.IsNullOrEmpty(description))
+            {
+                description = NotFoundDescription;
+            }
+
+            return c.NotFound(new ErrorResponse(description));
+        }
     }
 }

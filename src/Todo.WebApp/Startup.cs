@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Todo.WebApp.Controllers;
 
 namespace Todo.WebApp
 {
@@ -42,6 +44,22 @@ namespace Todo.WebApp
                     await context.Response.WriteAsync("Hello World!");
                 });
                 endpoints.MapControllers();
+
+                string fallbackControllerName = Regex.Replace(
+                    nameof(FallbackController),
+                    "Controller$",
+                    String.Empty
+                );
+                endpoints.MapFallbackToController(
+                    "api/{**slug}",
+                    action: nameof(FallbackController.ApiNotFoundFallback),
+                    controller: fallbackControllerName
+                );
+                endpoints.MapFallbackToController(
+                    "{**slug}",
+                    action: nameof(FallbackController.HtmlNotFoundFallback),
+                    controller: fallbackControllerName
+                );
             });
         }
     }

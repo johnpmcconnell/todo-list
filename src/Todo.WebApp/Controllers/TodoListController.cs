@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Todo.WebApp.DataModels;
 using Todo.WebApp.DbQueries;
@@ -25,11 +24,7 @@ namespace Todo.WebApp.Controllers
 
             if (null == list)
             {
-                // this.ViewData["title"] = "Not found";
-                return this.ErrorView(
-                    HttpStatusCode.NotFound,
-                    new ErrorResponse("This todo list does not exist")
-                );
+                return this.NotFoundView("This todo list does not exist");
             }
 
             return this.View("TodoList", list);
@@ -68,7 +63,7 @@ namespace Todo.WebApp.Controllers
 
             if (null == list)
             {
-                return this.NotFound(new ErrorResponse($"Todo list with ID {listId} not found"));
+                return this.NotFoundObject($"Todo list with ID {listId} not found");
             }
 
             return this.Ok(list);
