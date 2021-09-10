@@ -49,7 +49,11 @@ namespace Todo.WebApp
                 // Do not depend on configuring user to enable them.
                 // Equivalent to executing PRAGMA foreign_keys = ON
                 connStr += ";" + "Foreign Keys=true";
-                optionsBuilder.UseSqlite(connStr);
+                optionsBuilder.UseSqlite(connStr)
+                #if DEBUG
+                    .LogTo(q => System.Diagnostics.Debug.WriteLine($"EF {q}"))
+                #endif
+                ;
             }
         }
 
