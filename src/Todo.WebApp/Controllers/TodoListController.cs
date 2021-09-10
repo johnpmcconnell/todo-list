@@ -22,7 +22,11 @@ namespace Todo.WebApp.Controllers
         [Route("list/" + ListIdPattern)]
         public IActionResult Get(int listId)
         {
-            var list = this.Db.FetchList(listId);
+            TodoList list;
+            using (var trans = this.Db.Database.BeginTransaction())
+            {
+                list = this.Db.FetchList(listId);
+            }
 
             if (null == list)
             {
@@ -61,7 +65,11 @@ namespace Todo.WebApp.Controllers
         [Route("api/list/" + ListIdPattern)]
         public IActionResult ApiGet(int listId)
         {
-            var list = this.Db.FetchList(listId);
+            TodoList list;
+            using (var trans = this.Db.Database.BeginTransaction())
+            {
+                list = this.Db.FetchList(listId);
+            }
 
             if (null == list)
             {
