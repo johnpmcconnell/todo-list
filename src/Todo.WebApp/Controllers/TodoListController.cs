@@ -25,7 +25,7 @@ namespace Todo.WebApp.Controllers
             TodoList list;
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                list = this.Db.FetchList(listId);
+                list = this.Db.FetchTodoList(listId);
             }
 
             if (null == list)
@@ -49,7 +49,7 @@ namespace Todo.WebApp.Controllers
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateList(title, items);
+                var list = this.Db.CreateTodoList(title, items);
                 // Create result before commit in case of error
                 var result = this.RedirectRetrieveToAction(
                     HtmlRouteActionNames.TodoListGet,
@@ -68,7 +68,7 @@ namespace Todo.WebApp.Controllers
             TodoList list;
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                list = this.Db.FetchList(listId);
+                list = this.Db.FetchTodoList(listId);
             }
 
             if (null == list)
@@ -85,7 +85,7 @@ namespace Todo.WebApp.Controllers
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateList(title, items);
+                var list = this.Db.CreateTodoList(title, items);
                 // Create result before commit in case of error
                 var result = this.CreatedAtAction(
                     ApiRouteActionNames.TodoListGet,

@@ -8,7 +8,7 @@ namespace Todo.WebApp.DbQueries
 {
     public static class TodoListQueries
     {
-        public static TodoList FetchList(this TodoListDbContext db, int listId)
+        public static TodoList FetchTodoList(this TodoListDbContext db, int listId)
         {
             var list = db.TodoLists.Find(listId);
 
@@ -26,7 +26,7 @@ namespace Todo.WebApp.DbQueries
             );
         }
 
-        public static DataModels.TodoList CreateList(
+        public static DataModels.TodoList CreateTodoList(
             this TodoListDbContext db,
             string title,
             IEnumerable<string> items
