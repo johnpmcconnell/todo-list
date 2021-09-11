@@ -1,3 +1,5 @@
+@using static Todo.WebApp.Views.ViewDataNames;
+
 @{
     void ListItemHtml()
     {
@@ -11,7 +13,7 @@
 
 <html>
     <head>
-        <title>Todo List - Create New</title>
+        <title>Todo List - @ViewData[FormTitle]</title>
         <style>
             form > * {
                 display: block;
@@ -52,12 +54,12 @@
         </template>
     </head>
     <body>
-        <form id="createList" method="POST">
+        <form id="todoList" method="POST">
             <label for="title">Title</label>
             <input name="title" type="text">
             <label>Items</label>
             @{ ListItemHtml(); }
-            <input type="submit" value="Create">
+            <input type="submit" value="@ViewData[SubmitOperationName]">
         </form>
 
         <script>

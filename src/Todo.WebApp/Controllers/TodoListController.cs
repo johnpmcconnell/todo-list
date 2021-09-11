@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Todo.WebApp.DataModels;
 using Todo.WebApp.DbQueries;
+using static Todo.WebApp.Views.ViewDataNames;
 
 namespace Todo.WebApp.Controllers
 {
@@ -40,7 +41,9 @@ namespace Todo.WebApp.Controllers
         [Route("list/create")]
         public IActionResult Create()
         {
-            return this.View("TodoListCreate");
+            this.ViewData[FormTitle] = "Create New";
+            this.ViewData[SubmitOperationName] = "Create";
+            return this.View("TodoListForm");
         }
 
         [HttpPost]
