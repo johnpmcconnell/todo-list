@@ -3,7 +3,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using Todo.WebApp.DataModels;
+using Todo.WebApp.MvcModels;
 
 namespace Todo.WebApp.Controllers
 {
