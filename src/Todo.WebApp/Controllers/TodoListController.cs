@@ -47,6 +47,7 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpPost]
+        [ActionName(HtmlRouteActionNames.TodoListCreate)]
         [Route("list/create")]
         public IActionResult Create(string title, string[] items)
         {
@@ -83,6 +84,7 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpPost]
+        [ActionName(ApiRouteActionNames.TodoListCreate)]
         [Route("api/list/create")]
         public IActionResult ApiCreate(string title, string[] items)
         {

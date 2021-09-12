@@ -11,6 +11,7 @@ namespace Todo.WebApp
     internal static class HtmlRouteActionNames
     {
         public const string TodoListGet = "TodoListGet";
+        public const string TodoListCreate = "TodoListCreate";
     }
 
     /// <summary>
@@ -20,5 +21,6 @@ namespace Todo.WebApp
     internal static class ApiRouteActionNames
     {
         public const string TodoListGet = "Api" + HtmlRouteActionNames.TodoListGet;
+        public const string TodoListCreate = "Api" + HtmlRouteActionNames.TodoListCreate;
     }
 }
