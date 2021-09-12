@@ -1,10 +1,12 @@
+@using System.Linq;
 @using static Todo.WebApp.Views.ViewDataNames;
+@model Todo.WebApp.DataModels.TodoList;
 
 @{
-    void ListItemHtml()
+    void ListItemHtml(string value="")
     {
         <div class="itemContainer">
-            <input name="items[]" type="text">
+            <input name="items[]" type="text" value="@value">
             <button class="addItemButton" type="button">+</button>
             <button class="removeItemButton" type="button">-</button>
         </div>
@@ -70,9 +72,19 @@
     <body>
         <form id="todoList" method="POST">
             <label for="title">Title</label>
-            <input name="title" type="text">
+            <input name="title" type="text" value="@Model?.Title">
             <label>Items</label>
-            @{ ListItemHtml(); }
+            @if (Model?.Items?.Any() ?? false)
+            {
+                foreach (var i in Model.Items)
+                {
+                    ListItemHtml(i);
+                }
+            }
+            else
+            {
+                ListItemHtml();
+            }
             <input type="submit" value="@ViewData[SubmitOperationName]">
         </form>
     </body>
