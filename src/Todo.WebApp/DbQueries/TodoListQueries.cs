@@ -55,5 +55,53 @@ namespace Todo.WebApp.DbQueries
                 dbItems.Select(i => i.ItemDescription)
             );
         }
+
+        public static void UpdateTodoList(
+            this TodoListDbContext db,
+            TodoList newValues
+        )
+        {
+            var list = db.TodoLists.Find(newValues.Id);
+
+            if (null == list)
+            {
+                throw new ArgumentException($"List with ID {newValues.Id} does not exist", nameof(newValues));
+            }
+
+            var items = db.TodoListItems.Where(i => i.TodoListId == newValues.Id)
+                .OrderBy(i => i.TodoListItemId)
+                .ToList();
+
+            if (list.Title != newValues.Title)
+            {
+                list.Title = newValues.Title;
+            }
+
+            int smallerCount = Math.Min(newValues.Items.Count, items.Count);
+
+            for (int i = 0; i < smallerCount; i++)
+            {
+                if (items[i].ItemDescription != newValues.Items[i])
+                {
+                    items[i].ItemDescription = newValues.Items[i];
+                    db.Update(items[i]);
+                }
+            }
+
+            if (newValues.Items.Count > items.Count)
+            {
+                db.AddRange(
+                    newValues.Items.Skip(smallerCount)
+                        .Select(item => DbTodoListItem.ForInsert(list.TodoListId, item))
+                );
+            }
+
+            if (items.Count > newValues.Items.Count)
+            {
+                db.RemoveRange(items.Skip(smallerCount));
+            }
+
+            db.SaveChanges();
+        }
     }
 }
