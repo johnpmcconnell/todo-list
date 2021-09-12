@@ -12,7 +12,7 @@ namespace Todo.WebApp.DbModels
 
         [Column("title")]
         [Required]
-        public string Title { get; private set; }
+        public string Title { get; set; }
 
         // Required for Entity Framework
         private DbTodoList() { }

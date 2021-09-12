@@ -17,7 +17,7 @@ namespace Todo.WebApp.DbModels
 
         [Column("item_description")]
         [Required]
-        public string ItemDescription { get; private set; }
+        public string ItemDescription { get; set; }
 
         // Required for Entity Framework
         private DbTodoListItem() { }
