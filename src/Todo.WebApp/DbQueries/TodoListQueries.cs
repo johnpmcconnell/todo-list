@@ -17,7 +17,9 @@ namespace Todo.WebApp.DbQueries
                 return null;
             }
 
-            var items = db.TodoListItems.Where(i => i.TodoListId == listId);
+            var items = db.TodoListItems.Where(i => i.TodoListId == listId)
+                .OrderBy(i => i.TodoListItemId)
+                .ToList();
 
             return new TodoList(
                 listId,
@@ -40,8 +42,8 @@ namespace Todo.WebApp.DbQueries
             var dbItems = items
                 .Select(item => DbTodoListItem.ForInsert(dbList.TodoListId, item))
                 // Must materialize NOW
-                // Otherwise iteration will create new instances, which will not
-                // have the updated ID values after INSERT.
+                // Otherwise a second iteration will create new instances, which will
+                // not have the updated ID values after INSERT.
                 .ToList();
 
             db.TodoListItems.AddRange(dbItems);
