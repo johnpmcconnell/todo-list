@@ -13,14 +13,24 @@ namespace Todo.WebApp.DataModels
 
         public TodoList(int id, string title, IEnumerable<string> items)
         {
-            if (String.IsNullOrEmpty(title))
+            if (id < 1)
             {
-                throw new ArgumentException($"{nameof(title)} must not be null or empty");
+                throw new ArgumentException("Must be a positive integer", nameof(id));
             }
 
-            if (items == null)
+            if (String.IsNullOrEmpty(title))
+            {
+                throw new ArgumentException("Must not be null or empty", nameof(title));
+            }
+
+            if (null == items)
             {
                 items = Enumerable.Empty<string>();
+            }
+
+            if (items.Any(String.IsNullOrWhiteSpace))
+            {
+                throw new ArgumentException("Cannot contain null, empty, or whitespace only strings", nameof(items));
             }
 
             this.Id = id;
