@@ -20,33 +20,47 @@
             }
         </style>
         <script>
-            function addItem(event) {
+            function addItem(itemContainer) {
+                let template = document.getElementById("todo-item-template");
+
+                let newItem = template.content.querySelector('.itemContainer').cloneNode(true);
+                setOnClick(newItem);
+
+                itemContainer.after(newItem);
+            }
+
+            function removeItem(itemContainer) {
+                itemContainer.remove();
+            }
+
+            function addItemEventHandler(event) {
                 let itemContainer = event.target.closest(".itemContainer");
 
                 if (null !== itemContainer) {
-                    let template = document.getElementById("todo-item-template");
-
-                    let newItem = template.content.querySelector('.itemContainer').cloneNode(true);
-                    setOnClick(newItem);
-
-                    itemContainer.after(newItem);
+                    addItem(itemContainer);
                 }
             }
 
-            function removeItem(event) {
+            function removeItemEventHandler(event) {
                 let itemContainer = event.target.closest(".itemContainer");
-
                 if (null !== itemContainer) {
-                    itemContainer.remove();
+                    removeItem(itemContainer);
                 }
             }
 
             function setOnClick(listItemElementContainer) {
-                let add = Array.from(listItemElementContainer.getElementsByClassName("addItemButton"));
-                let remove = Array.from(listItemElementContainer.getElementsByClassName("removeItemButton"));
+                let add = Array.from(listItemElementContainer.querySelectorAll(".addItemButton"));
+                let remove = Array.from(listItemElementContainer.querySelectorAll(".removeItemButton"));
 
-                add.forEach(a => a.addEventListener('click', addItem));
-                remove.forEach(r => r.addEventListener('click', removeItem));
+                add.forEach(a => a.addEventListener('click', addItemEventHandler));
+                remove.forEach(r => r.addEventListener('click', removeItemEventHandler));
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", event => setOnClick(document.getElementById("todoList")));
+            }
+            else {
+                setOnClick(document.getElementById("todoList"))
             }
         </script>
         <template id="todo-item-template">
@@ -61,9 +75,5 @@
             @{ ListItemHtml(); }
             <input type="submit" value="@ViewData[SubmitOperationName]">
         </form>
-
-        <script>
-            setOnClick(document.getElementById("createList"));
-        </script>
     </body>
 </html>
