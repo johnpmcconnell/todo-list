@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Todo.WebApp.DataModels
+namespace Todo.WebApp.SharedModels
 {
     public class TodoList
     {

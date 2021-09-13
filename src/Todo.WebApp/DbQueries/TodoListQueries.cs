@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Todo.WebApp.DataModels;
 using Todo.WebApp.DbModels;
+using Todo.WebApp.SharedModels;
 
 namespace Todo.WebApp.DbQueries
 {
@@ -28,7 +28,7 @@ namespace Todo.WebApp.DbQueries
             );
         }
 
-        public static DataModels.TodoList CreateTodoList(
+        public static TodoList CreateTodoList(
             this TodoListDbContext db,
             string title,
             IEnumerable<string> items

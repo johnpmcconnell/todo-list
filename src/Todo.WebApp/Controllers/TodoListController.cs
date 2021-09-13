@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Todo.WebApp.DataModels;
 using Todo.WebApp.DbQueries;
 using Todo.WebApp.MvcModels;
+using Todo.WebApp.SharedModels;
 using static Todo.WebApp.Views.ViewDataNames;
 
 namespace Todo.WebApp.Controllers
@@ -70,7 +70,7 @@ namespace Todo.WebApp.Controllers
                     return this.NotFound($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(HtmlRouteActionNames.TodoListCreate)} to create a new list.");
                 }
 
-                var newList = list.ToData();
+                var newList = list.ToShared();
                 this.Db.UpdateTodoList(newList);
                 var response = this.RedirectRetrieveToAction(
                     HtmlRouteActionNames.TodoListGet,
@@ -141,7 +141,7 @@ namespace Todo.WebApp.Controllers
                     return this.NotFoundObject($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(ApiRouteActionNames.TodoListCreate)} to create a new list.");
                 }
 
-                var newList = list.ToData();
+                var newList = list.ToShared();
                 this.Db.UpdateTodoList(newList);
                 trans.Commit();
                 return this.Ok(newList);

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Todo.WebApp.DataModels;
+using Todo.WebApp.SharedModels;
 
 namespace Todo.WebApp.MvcModels
 {
@@ -11,7 +11,7 @@ namespace Todo.WebApp.MvcModels
         public string Title { get; set; }
         public List<string> Items { get; set; }
 
-        public TodoList ToData()
+        public TodoList ToShared()
         {
             return new TodoList(this.ListId, this.Title, this.Items);
         }
