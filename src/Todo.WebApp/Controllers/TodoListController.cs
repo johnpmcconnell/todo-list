@@ -60,7 +60,7 @@ namespace Todo.WebApp.Controllers
         [HttpPost]
         [HttpPut]
         [Route("list/" + ListIdPattern + "/edit")]
-        public IActionResult SaveEdit(TodoListEditModel list)
+        public IActionResult SaveEdit(TodoListFullModel list)
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
@@ -94,11 +94,11 @@ namespace Todo.WebApp.Controllers
         [HttpPost]
         [ActionName(HtmlRouteActionNames.TodoListCreate)]
         [Route("list/create")]
-        public IActionResult Create(string title, string[] items)
+        public IActionResult Create(TodoListDataModel listData)
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateTodoList(title, items);
+                var list = this.Db.CreateTodoList(listData.Title, listData.Items);
                 // Create result before commit in case of error
                 var result = this.RedirectRetrieveToAction(
                     HtmlRouteActionNames.TodoListGet,
@@ -131,7 +131,7 @@ namespace Todo.WebApp.Controllers
         [HttpPost]
         [HttpPut]
         [Route("api/list/" + ListIdPattern)]
-        public IActionResult ApiEdit(TodoListEditModel list)
+        public IActionResult ApiEdit(TodoListFullModel list)
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
@@ -151,11 +151,11 @@ namespace Todo.WebApp.Controllers
         [HttpPost]
         [ActionName(ApiRouteActionNames.TodoListCreate)]
         [Route("api/list/create")]
-        public IActionResult ApiCreate(string title, string[] items)
+        public IActionResult ApiCreate(TodoListDataModel listData)
         {
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateTodoList(title, items);
+                var list = this.Db.CreateTodoList(listData.Title, listData.Items);
                 // Create result before commit in case of error
                 var result = this.CreatedAtAction(
                     ApiRouteActionNames.TodoListGet,
