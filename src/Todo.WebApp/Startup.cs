@@ -45,6 +45,7 @@ namespace Todo.WebApp
                 });
                 endpoints.MapControllers();
 
+                // TODO: Fix mishandling of invalid HTTP methods
                 string fallbackControllerName = Regex.Replace(
                     nameof(FallbackController),
                     "Controller$",
