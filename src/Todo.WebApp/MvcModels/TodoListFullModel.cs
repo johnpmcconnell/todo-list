@@ -10,7 +10,7 @@ namespace Todo.WebApp.MvcModels
 
         public TodoList ToShared()
         {
-            return new TodoList(this.ListId, this.Title, this.Items);
+            return new TodoList(this.ListId, this.Title, this.ItemDescriptions);
         }
     }
 }

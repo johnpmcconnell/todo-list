@@ -62,6 +62,14 @@ namespace Todo.WebApp.Controllers
         [Route("list/" + ListIdPattern + "/edit")]
         public IActionResult SaveEdit(TodoListFullModel list)
         {
+            // TODO: Make this display in page, but users shouldn't
+            // encounter during normal usage anyway since front end
+            // validation should prevent submission
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             using (var trans = this.Db.Database.BeginTransaction())
             {
                 var oldList = this.Db.FetchTodoList(list.ListId);
@@ -96,9 +104,17 @@ namespace Todo.WebApp.Controllers
         [Route("list/create")]
         public IActionResult Create(TodoListDataModel listData)
         {
+            // TODO: Make this display in page, but users shouldn't
+            // encounter during normal usage anyway since front end
+            // validation should prevent submission
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateTodoList(listData.Title, listData.Items);
+                var list = this.Db.CreateTodoList(listData.Title, listData.ItemDescriptions);
                 // Create result before commit in case of error
                 var result = this.RedirectRetrieveToAction(
                     HtmlRouteActionNames.TodoListGet,
@@ -133,6 +149,11 @@ namespace Todo.WebApp.Controllers
         [Route("api/list/" + ListIdPattern)]
         public IActionResult ApiEdit(TodoListFullModel list)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             using (var trans = this.Db.Database.BeginTransaction())
             {
                 var oldList = this.Db.FetchTodoList(list.ListId);
@@ -153,9 +174,14 @@ namespace Todo.WebApp.Controllers
         [Route("api/list/create")]
         public IActionResult ApiCreate(TodoListDataModel listData)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             using (var trans = this.Db.Database.BeginTransaction())
             {
-                var list = this.Db.CreateTodoList(listData.Title, listData.Items);
+                var list = this.Db.CreateTodoList(listData.Title, listData.ItemDescriptions);
                 // Create result before commit in case of error
                 var result = this.CreatedAtAction(
                     ApiRouteActionNames.TodoListGet,
