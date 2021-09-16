@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Todo.WebApp.Controllers;
+using static Todo.WebApp.Controllers.ControllerExtensions;
 
 namespace Todo.WebApp
 {
@@ -46,20 +47,15 @@ namespace Todo.WebApp
                 endpoints.MapControllers();
 
                 // TODO: Fix mishandling of invalid HTTP methods
-                string fallbackControllerName = Regex.Replace(
-                    nameof(FallbackController),
-                    "Controller$",
-                    String.Empty
-                );
                 endpoints.MapFallbackToController(
                     "api/{**slug}",
                     action: nameof(FallbackController.ApiNotFoundFallback),
-                    controller: fallbackControllerName
+                    controller: RoutingName<FallbackController>()
                 );
                 endpoints.MapFallbackToController(
                     "{**slug}",
                     action: nameof(FallbackController.HtmlNotFoundFallback),
-                    controller: fallbackControllerName
+                    controller: RoutingName<FallbackController>()
                 );
             });
         }

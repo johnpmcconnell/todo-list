@@ -20,7 +20,6 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpGet]
-        [ActionName(HtmlRouteActionNames.TodoListGet)]
         [Route("list/" + ListIdPattern)]
         public IActionResult Get(int listId)
         {
@@ -48,7 +47,7 @@ namespace Todo.WebApp.Controllers
 
                 if (null == list)
                 {
-                    return this.NotFoundView($"Todo list with ID {listId} not found. Use {this.Url.Action(HtmlRouteActionNames.TodoListCreate)} to create a new list.");
+                    return this.NotFoundView($"Todo list with ID {listId} not found. Use {this.Url.Action(nameof(Create))} to create a new list.");
                 }
 
                 this.ViewData[FormTitle] = "Edit";
@@ -75,13 +74,13 @@ namespace Todo.WebApp.Controllers
                 var oldList = this.Db.FetchTodoList(list.ListId);
                 if (null == oldList)
                 {
-                    return this.NotFound($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(HtmlRouteActionNames.TodoListCreate)} to create a new list.");
+                    return this.NotFound($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(nameof(Create))} to create a new list.");
                 }
 
                 var newList = list.ToShared();
                 this.Db.UpdateTodoList(newList);
                 var response = this.RedirectRetrieveToAction(
-                    HtmlRouteActionNames.TodoListGet,
+                    nameof(Get),
                     new { listId = newList.Id }
                 );
 
@@ -100,7 +99,6 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpPost]
-        [ActionName(HtmlRouteActionNames.TodoListCreate)]
         [Route("list/create")]
         public IActionResult Create(TodoListDataModel listData)
         {
@@ -117,7 +115,7 @@ namespace Todo.WebApp.Controllers
                 var list = this.Db.CreateTodoList(listData.Title, listData.ItemDescriptions);
                 // Create result before commit in case of error
                 var result = this.RedirectRetrieveToAction(
-                    HtmlRouteActionNames.TodoListGet,
+                    nameof(Get),
                     new { listId = list.Id }
                 );
                 trans.Commit();
@@ -126,7 +124,6 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpGet]
-        [ActionName(ApiRouteActionNames.TodoListGet)]
         [Route("api/list/" + ListIdPattern)]
         public IActionResult ApiGet(int listId)
         {
@@ -159,7 +156,7 @@ namespace Todo.WebApp.Controllers
                 var oldList = this.Db.FetchTodoList(list.ListId);
                 if (null == oldList)
                 {
-                    return this.NotFoundObject($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(ApiRouteActionNames.TodoListCreate)} to create a new list.");
+                    return this.NotFoundObject($"Todo list with ID {list.ListId} not found. Use {this.Url.Action(nameof(ApiCreate))} to create a new list.");
                 }
 
                 var newList = list.ToShared();
@@ -170,7 +167,6 @@ namespace Todo.WebApp.Controllers
         }
 
         [HttpPost]
-        [ActionName(ApiRouteActionNames.TodoListCreate)]
         [Route("api/list/create")]
         public IActionResult ApiCreate(TodoListDataModel listData)
         {
@@ -184,7 +180,7 @@ namespace Todo.WebApp.Controllers
                 var list = this.Db.CreateTodoList(listData.Title, listData.ItemDescriptions);
                 // Create result before commit in case of error
                 var result = this.CreatedAtAction(
-                    ApiRouteActionNames.TodoListGet,
+                    nameof(ApiGet),
                     new { listId = list.Id },
                     list
                 );

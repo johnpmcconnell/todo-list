@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -9,6 +10,11 @@ namespace Todo.WebApp.Controllers
 {
     public static class ControllerExtensions
     {
+        public static string RoutingName<T>() where T: Controller
+        {
+            return Regex.Replace(typeof(T).Name, "Controller$", String.Empty);
+        }
+
         public static IActionResult RedirectRetrieve(
             this ControllerBase c,
             string location
@@ -16,6 +22,16 @@ namespace Todo.WebApp.Controllers
         {
             c.Response.Headers.Add(HeaderNames.Location, location);
             return c.StatusCode(StatusCodes.Status303SeeOther);
+        }
+
+        public static IActionResult RedirectRetrieveToAction(
+            this ControllerBase c,
+            string action,
+            string controller,
+            object routeValues
+        )
+        {
+            return c.RedirectRetrieve(c.Url.Action(action, controller, routeValues));
         }
 
         public static IActionResult RedirectRetrieveToAction(
