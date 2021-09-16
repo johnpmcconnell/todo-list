@@ -40,10 +40,6 @@ namespace Todo.WebApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
                 endpoints.MapControllers();
 
                 // TODO: Fix mishandling of invalid HTTP methods

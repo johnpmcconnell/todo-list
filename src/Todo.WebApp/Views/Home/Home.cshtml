@@ -1,0 +1,32 @@
+@using System.Collections.Generic;
+@using Todo.WebApp.Controllers
+@using Todo.WebApp.SharedModels;
+@using static Todo.WebApp.Controllers.ControllerExtensions;
+@model List<TodoListSummary>;
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo List</title>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="@Url.Action(nameof(HomeController.Index), RoutingName<HomeController>())">Home</a></li>
+                <li><a href="@Url.Action(nameof(TodoListController.Create), RoutingName<TodoListController>())">Create List</a></li>
+            </ul>
+        </nav>
+        <main>
+            <ul>
+            @foreach (var summary in Model)
+            {
+                <li>
+                    <a href="@Url.Action(nameof(TodoListController.Get), RoutingName<TodoListController>(), new { listId = summary.Id })">
+                        @summary.Title
+                    </a>
+                </li>
+            }
+            </ul>
+        </main>
+    </body>
+</html>

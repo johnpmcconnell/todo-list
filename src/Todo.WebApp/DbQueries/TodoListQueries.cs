@@ -8,6 +8,11 @@ namespace Todo.WebApp.DbQueries
 {
     public static class TodoListQueries
     {
+        public static List<TodoListSummary> FetchTodoListSummaries(this TodoListDbContext db)
+        {
+            return db.TodoLists.Select(l => new TodoListSummary(l.TodoListId, l.Title)).ToList();
+        }
+
         public static TodoList FetchTodoList(this TodoListDbContext db, int listId)
         {
             var list = db.TodoLists.Find(listId);
