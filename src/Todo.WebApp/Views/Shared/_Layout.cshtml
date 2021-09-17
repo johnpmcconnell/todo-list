@@ -1,0 +1,29 @@
+@using Todo.WebApp.Controllers
+@using static Todo.WebApp.Controllers.ControllerExtensions;
+@using static Todo.WebApp.Views.ViewDataNames;
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Todo List
+            @if(ViewData.ContainsKey(PageTitle)) {
+                @: - @ViewData[PageTitle]
+            }
+        </title>
+        @RenderSection("pageHead", required: false)
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="@Url.Action(nameof(HomeController.Index), RoutingName<HomeController>())">Home</a></li>
+                <li><a href="@Url.Action(nameof(TodoListController.Create), RoutingName<TodoListController>())">Create List</a></li>
+                @RenderSection("pageNav", required: false)
+            </ul>
+        </nav>
+        <main>
+            @RenderBody()
+        </main>
+    </body>
+</html>
+

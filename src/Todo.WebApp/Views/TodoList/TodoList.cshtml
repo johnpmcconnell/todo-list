@@ -1,17 +1,30 @@
-@model Todo.WebApp.SharedModels.TodoList;
+@using Todo.WebApp.Controllers
+@using static Todo.WebApp.Controllers.ControllerExtensions
+@model Todo.WebApp.SharedModels.TodoList
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Todo List - @Model.Title</title>
-    </head>
-    <body>
-        <h1>@Model.Title</h1>
-        <ul>
-            @foreach (string item in Model.Items)
-            {
-                <li>@item</li>
-            }
-        </ul>
-    </body>
-</html>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section pageNav {
+    <li>
+        <a href="
+            @Url.Action(
+                nameof(TodoListController.Edit),
+                RoutingName<TodoListController>(),
+                new { listId = Model.Id }
+            )
+        ">
+            Edit
+        </a>
+    </li>
+}
+
+<h1>@Model.Title</h1>
+<ul>
+    @foreach (string item in Model.Items)
+    {
+        <li>@item</li>
+    }
+</ul>

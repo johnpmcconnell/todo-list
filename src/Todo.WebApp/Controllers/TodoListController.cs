@@ -34,6 +34,7 @@ namespace Todo.WebApp.Controllers
                 return this.NotFoundView("This todo list does not exist");
             }
 
+            this.ViewData[PageTitle] = list.Title;
             return this.View("TodoList", list);
         }
 
@@ -50,7 +51,7 @@ namespace Todo.WebApp.Controllers
                     return this.NotFoundView($"Todo list with ID {listId} not found. Use {this.Url.Action(nameof(Create))} to create a new list.");
                 }
 
-                this.ViewData[FormTitle] = "Edit";
+                this.ViewData[PageTitle] = "Edit";
                 this.ViewData[SubmitOperationName] = "Save";
                 return this.View("TodoListForm", list);
             }
@@ -93,7 +94,7 @@ namespace Todo.WebApp.Controllers
         [Route("list/create")]
         public IActionResult Create()
         {
-            this.ViewData[FormTitle] = "Create New";
+            this.ViewData[PageTitle] = "Create New";
             this.ViewData[SubmitOperationName] = "Create";
             return this.View("TodoListForm");
         }

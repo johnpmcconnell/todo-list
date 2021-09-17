@@ -1,6 +1,12 @@
 @using System.Linq;
+@using Todo.WebApp.Controllers;
+@using static Todo.WebApp.Controllers.ControllerExtensions;
 @using static Todo.WebApp.Views.ViewDataNames;
 @model Todo.WebApp.SharedModels.TodoList;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 @{
     void ListItemHtml(string value="", string indexName="")
@@ -14,92 +20,105 @@
     }
 }
 
-<html>
-    <head>
-        <title>Todo List - @ViewData[FormTitle]</title>
-        <style>
-            form > * {
-                display: block;
-            }
-        </style>
-        <meta name="startIndex" content="@(Model?.Items?.Count ?? 1)">
-        <script>
-            let nextIndex = 1;
+@section pageHead {
+<style>
+    form > * {
+        display: block;
+    }
+</style>
+<meta name="startIndex" content="@(Model?.Items?.Count ?? 1)">
+<script>
+    let nextIndex = 1;
 
-            function addItem(itemContainer) {
-                let template = document.getElementById("todo-item-template");
+    function addItem(itemContainer) {
+        let template = document.getElementById("todo-item-template");
 
-                let newItem = template.content.querySelector(".itemContainer").cloneNode(true);
-                let idxName = "idx" + nextIndex;
-                newItem.querySelector(".itemIdx").setAttribute("value", idxName);
-                newItem.querySelector(".itemDesc").setAttribute("name", `items[${idxName}].description` );
-                setOnClick(newItem);
+        let newItem = template.content.querySelector(".itemContainer").cloneNode(true);
+        let idxName = "idx" + nextIndex;
+        newItem.querySelector(".itemIdx").setAttribute("value", idxName);
+        newItem.querySelector(".itemDesc").setAttribute("name", `items[${idxName}].description` );
+        setOnClick(newItem);
 
-                nextIndex++;
-                itemContainer.after(newItem);
-            }
+        nextIndex++;
+        itemContainer.after(newItem);
+    }
 
-            function removeItem(itemContainer) {
-                itemContainer.remove();
-            }
+    function removeItem(itemContainer) {
+        itemContainer.remove();
+    }
 
-            function addItemEventHandler(event) {
-                let itemContainer = event.target.closest(".itemContainer");
+    function addItemEventHandler(event) {
+        let itemContainer = event.target.closest(".itemContainer");
 
-                if (null !== itemContainer) {
-                    addItem(itemContainer);
-                }
-            }
+        if (null !== itemContainer) {
+            addItem(itemContainer);
+        }
+    }
 
-            function removeItemEventHandler(event) {
-                let itemContainer = event.target.closest(".itemContainer");
-                if (null !== itemContainer) {
-                    removeItem(itemContainer);
-                }
-            }
+    function removeItemEventHandler(event) {
+        let itemContainer = event.target.closest(".itemContainer");
+        if (null !== itemContainer) {
+            removeItem(itemContainer);
+        }
+    }
 
-            function setOnClick(listItemElementContainer) {
-                let add = Array.from(listItemElementContainer.querySelectorAll(".addItemButton"));
-                let remove = Array.from(listItemElementContainer.querySelectorAll(".removeItemButton"));
+    function setOnClick(listItemElementContainer) {
+        let add = Array.from(listItemElementContainer.querySelectorAll(".addItemButton"));
+        let remove = Array.from(listItemElementContainer.querySelectorAll(".removeItemButton"));
 
-                add.forEach(a => a.addEventListener("click", addItemEventHandler));
-                remove.forEach(r => r.addEventListener("click", removeItemEventHandler));
-            }
+        add.forEach(a => a.addEventListener("click", addItemEventHandler));
+        remove.forEach(r => r.addEventListener("click", removeItemEventHandler));
+    }
 
-            function setupList() {
-                setOnClick(document.getElementById("todoList"));
-                let startIndexElem = document.querySelector('meta[name~="startIndex"]');
-                nextIndex = parseInt(startIndexElem.getAttribute("content")) + 1;
-            }
+    function setupList() {
+        setOnClick(document.getElementById("todoList"));
+        let startIndexElem = document.querySelector('meta[name~="startIndex"]');
+        nextIndex = parseInt(startIndexElem.getAttribute("content")) + 1;
+    }
 
-            if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", event => setupList());
-            }
-            else {
-                setupList();
-            }
-        </script>
-        <template id="todo-item-template">
-            @{ ListItemHtml(); }
-        </template>
-    </head>
-    <body>
-        <form id="todoList" method="POST">
-            <label for="title">Title</label>
-            <input name="title" type="text" value="@Model?.Title">
-            <label>Items</label>
-            @if (Model?.Items?.Any() ?? false)
-            {
-                foreach (var i in Model.Items.Select((item, idx) => (item, idx)))
-                {
-                    ListItemHtml(i.item, "idx" + i.idx);
-                }
-            }
-            else
-            {
-                ListItemHtml(indexName: "idx0");
-            }
-            <input type="submit" value="@ViewData[SubmitOperationName]">
-        </form>
-    </body>
-</html>
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", event => setupList());
+    }
+    else {
+        setupList();
+    }
+</script>
+<template id="todo-item-template">
+    @{ ListItemHtml(); }
+</template>
+}
+
+@section pageNav {
+    @if (null != Model) {
+        <li>
+            <a href="
+                @Url.Action(
+                    nameof(TodoListController.Get),
+                    RoutingName<TodoListController>(),
+                    new { listId = Model.Id }
+                )
+            ">
+                View
+            </a>
+        </li>
+    }
+}
+
+
+<form id="todoList" method="POST">
+    <label for="title">Title</label>
+    <input name="title" type="text" value="@Model?.Title">
+    <label>Items</label>
+    @if (Model?.Items?.Any() ?? false)
+    {
+        foreach (var i in Model.Items.Select((item, idx) => (item, idx)))
+        {
+            ListItemHtml(i.item, "idx" + i.idx);
+        }
+    }
+    else
+    {
+        ListItemHtml(indexName: "idx0");
+    }
+    <input type="submit" value="@ViewData[SubmitOperationName]">
+</form>
