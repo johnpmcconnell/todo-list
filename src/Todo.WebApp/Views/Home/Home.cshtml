@@ -8,10 +8,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<ul>
+<h1>Your lists</h1>
+
+<ul class="list-group">
 @foreach (var summary in Model)
 {
-    <li>
+    <li class="list-group-item">
         <a href="
             @Url.Action(
                 nameof(TodoListController.Get),

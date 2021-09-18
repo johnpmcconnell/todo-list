@@ -5,3 +5,8 @@
 .navbar .nav-link {
     color: black;
 }
+
+.list-group-item {
+    background-color: #FFFFC2;
+    border-color: #468189;
+}
