@@ -31,17 +31,15 @@
 
 @section pageNav {
     @if (null != Model) {
-        <li>
-            <a href="
-                @Url.Action(
-                    nameof(TodoListController.Get),
-                    RoutingName<TodoListController>(),
-                    new { listId = Model.Id }
-                )
-            ">
-                View
-            </a>
-        </li>
+        <a class="nav-link" href="
+            @Url.Action(
+                nameof(TodoListController.Get),
+                RoutingName<TodoListController>(),
+                new { listId = Model.Id }
+            )
+        ">
+            View
+        </a>
     }
 }
 

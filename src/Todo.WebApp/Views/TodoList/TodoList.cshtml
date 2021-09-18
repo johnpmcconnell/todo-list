@@ -8,17 +8,15 @@
 
 
 @section pageNav {
-    <li>
-        <a href="
-            @Url.Action(
-                nameof(TodoListController.Edit),
-                RoutingName<TodoListController>(),
-                new { listId = Model.Id }
-            )
-        ">
-            Edit
-        </a>
-    </li>
+    <a class="nav-link" href="
+        @Url.Action(
+            nameof(TodoListController.Edit),
+            RoutingName<TodoListController>(),
+            new { listId = Model.Id }
+        )
+    ">
+        Edit
+    </a>
 }
 
 <h1>@Model.Title</h1>

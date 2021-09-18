@@ -13,15 +13,14 @@
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/lib/bootstrap-5.1.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/todolist-common.css">
         @RenderSection("pageHead", required: false)
     </head>
     <body class="container">
-        <nav>
-            <ul>
-                <li><a href="@Url.Action(nameof(HomeController.Index), RoutingName<HomeController>())">Home</a></li>
-                <li><a href="@Url.Action(nameof(TodoListController.Create), RoutingName<TodoListController>())">Create List</a></li>
-                @RenderSection("pageNav", required: false)
-            </ul>
+        <nav class="navbar justify-content-center">
+            <a class="nav-link" href="@Url.Action(nameof(HomeController.Index), RoutingName<HomeController>())">Home</a>
+            <a class="nav-link" href="@Url.Action(nameof(TodoListController.Create), RoutingName<TodoListController>())">Create List</a>
+            @RenderSection("pageNav", required: false)
         </nav>
         <main>
             @RenderBody()
