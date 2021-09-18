@@ -11,10 +11,11 @@
                 @: - @ViewData[PageTitle]
             }
         </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/lib/bootstrap-5.1.1-dist/css/bootstrap.min.css">
         @RenderSection("pageHead", required: false)
     </head>
-    <body>
+    <body class="container">
         <nav>
             <ul>
                 <li><a href="@Url.Action(nameof(HomeController.Index), RoutingName<HomeController>())">Home</a></li>
