@@ -28,6 +28,12 @@ function addItem(itemContainer) {
 }
 
 function removeItem(itemContainer) {
+    let count = document.getElementById("itemCountValidator");
+    if (count.value < 2) {
+        // Do not remove last item
+        return;
+    }
+
     itemContainer.remove();
 
     updateItemCount();
