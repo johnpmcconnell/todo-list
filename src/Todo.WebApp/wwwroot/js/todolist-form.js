@@ -43,9 +43,24 @@ function setOnClick(listItemElementContainer) {
 }
 
 function setupList() {
-    setOnClick(document.getElementById("todoList"));
+    let form = document.getElementById("todoList");
+    setOnClick(form);
+
     let startIndexElem = document.querySelector('meta[name~="startIndex"]');
     nextIndex = parseInt(startIndexElem.getAttribute("content")) + 1;
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+        },
+        false
+    );
 }
 
 if (document.readyState === "loading") {

@@ -12,19 +12,22 @@
 @{
     void ListItemHtml(string value="", string indexName="")
     {
-        <li class="itemContainer list-group-item d-flex align-items-end">
-            <input class="itemIdx" type="hidden" name="items.Index" value="@indexName" />
-            <input
-                class="itemDesc form-control"
-                name="items[@indexName].description"
-                type="text"
-                value="@value"
-                required
-                minlength="@MinStrLen"
-                maxlength="@MaxStrLen"
-            >
-            <button class="addItemButton btn btn-secondary ms-1" type="button">+</button>
-            <button class="removeItemButton btn btn-secondary ms-1" type="button">-</button>
+        <li class="itemContainer list-group-item">
+            <div class="input-group">
+                <input class="itemIdx" type="hidden" name="items.Index" value="@indexName" />
+                <input
+                    class="itemDesc form-control"
+                    name="items[@indexName].description"
+                    type="text"
+                    value="@value"
+                    required
+                    minlength="@MinStrLen"
+                    maxlength="@MaxStrLen"
+                >
+                <button class="addItemButton btn btn-outline-secondary" type="button">+</button>
+                <button class="removeItemButton btn btn-outline-secondary" type="button">-</button>
+                <div class="invalid-feedback">Must be between @MinStrLen and @MaxStrLen characters</div>
+            </div>
         </li>
     }
 }
@@ -60,7 +63,7 @@
         @: Edit list
     }
 </h1>
-<form id="todoList" method="POST" class="mb-3">
+<form id="todoList" method="POST" class="needs-validation mb-3" novalidate>
     <div>
         <label class="form-label" for="title">Title</label>
         <input
@@ -72,6 +75,7 @@
             maxlength="@MaxStrLen"
             value="@Model?.Title"
         >
+        <div class="invalid-feedback">Must be between @MinStrLen and @MaxStrLen characters</div>
     </div>
     <label class="form-label">Items</label>
     <div class="mb-3">
