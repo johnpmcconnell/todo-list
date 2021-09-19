@@ -2,6 +2,16 @@
 
 let nextIndex = 1;
 
+function updateItemCount() {
+    let form = document.getElementById("todoList");
+    let countValidator = document.getElementById("itemCountValidator");
+    let countDisplay = document.getElementById("itemCountDisplay");
+
+    let items = form.querySelectorAll(".itemContainer");
+    countValidator.value = items.length;
+    countDisplay.textContent = `(${items.length})`;
+}
+
 function addItem(itemContainer) {
     let template = document.getElementById("todo-item-template");
 
@@ -13,10 +23,14 @@ function addItem(itemContainer) {
 
     nextIndex++;
     itemContainer.after(newItem);
+
+    updateItemCount();
 }
 
 function removeItem(itemContainer) {
     itemContainer.remove();
+
+    updateItemCount();
 }
 
 function addItemEventHandler(event) {
@@ -46,8 +60,9 @@ function setupList() {
     let form = document.getElementById("todoList");
     setOnClick(form);
 
-    let startIndexElem = document.querySelector('meta[name~="startIndex"]');
-    nextIndex = parseInt(startIndexElem.getAttribute("content")) + 1;
+    updateItemCount();
+    let count = document.getElementById("itemCountValidator");
+    nextIndex = count.value;
 
     form.addEventListener(
         "submit",

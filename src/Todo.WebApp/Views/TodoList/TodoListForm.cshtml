@@ -33,7 +33,6 @@
 }
 
 @section pageHead {
-<meta name="startIndex" content="@(Model?.Items?.Count ?? 1)">
 <script src="/js/todolist-form.js"></script>
 <template id="todo-item-template">
     @{ ListItemHtml(); }
@@ -77,7 +76,31 @@
         >
         <div class="invalid-feedback">Must be between @MinStrLen and @MaxStrLen characters</div>
     </div>
-    <label class="form-label">Items</label>
+    <div class="mb-1">
+        <label class="form-label mb-0">Items</label>
+        <span id="itemCountDisplay" class="text-muted small">
+            (@(Model?.Items?.Count ?? 1))
+        </span>
+        @*
+        itemCountValidator exists to keep track of the number of items
+        for client side validation. Its value is automatically updated
+        whenever items are added or removed.
+        The missing name attribute prevents submission to the server.
+        d-none prevents display or user interaction without disabling
+        validation.
+        Display is provided by the itemCountDisplay span instead,
+        which avoids the difficult problem of trying to find a way to
+        disable user interaction without disabling validation.
+        *@
+        <input
+            id="itemCountValidator"
+            type="number"
+            class="d-none"
+            min="@MinListLen"
+            max="@MaxListLen"
+        >
+        <div class="invalid-feedback">Must have between @MinListLen and @MaxListLen items</div>
+    </div>
     <div class="mb-3">
         <ul class="list-group">
         @if (Model?.Items?.Any() ?? false)
