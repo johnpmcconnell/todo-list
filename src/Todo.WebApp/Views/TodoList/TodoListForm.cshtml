@@ -39,21 +39,6 @@
 </template>
 }
 
-@section pageNav {
-    @if (null != Model) {
-        <a class="nav-link" href="
-            @Url.Action(
-                nameof(TodoListController.Get),
-                RoutingName<TodoListController>(),
-                new { listId = Model.Id }
-            )
-        ">
-            View
-        </a>
-    }
-}
-
-
 <h1 class="mb-3">
     @if(null == Model) {
         @: Create new list
@@ -117,4 +102,22 @@
         </ul>
     </div>
     <input class="btn btn-primary" type="submit" value="@ViewData[SubmitOperationName]">
+    @{
+        string cancelUrl = null;
+        if (null == Model)
+        {
+            cancelUrl = Url.Action(
+                nameof(HomeController.Index),
+                RoutingName<HomeController>()
+            );
+        }
+        else {
+            cancelUrl = Url.Action(
+                nameof(TodoListController.Get),
+                RoutingName<TodoListController>(),
+                new { listId = Model.Id }
+            );
+        }
+    }
+    <a class="btn btn-secondary" href="@cancelUrl">Cancel</a>
 </form>
