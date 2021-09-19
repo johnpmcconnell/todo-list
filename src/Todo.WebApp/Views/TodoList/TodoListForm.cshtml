@@ -1,6 +1,7 @@
 @using System.Linq;
 @using Todo.WebApp.Controllers;
 @using static Todo.WebApp.Controllers.ControllerExtensions;
+@using static Todo.WebApp.MvcModels.ValidationConstants;
 @using static Todo.WebApp.Views.ViewDataNames;
 @model Todo.WebApp.SharedModels.TodoList;
 
@@ -13,7 +14,15 @@
     {
         <li class="itemContainer list-group-item d-flex align-items-end">
             <input class="itemIdx" type="hidden" name="items.Index" value="@indexName" />
-            <input class="itemDesc form-control" name="items[@indexName].description" type="text" value="@value">
+            <input
+                class="itemDesc form-control"
+                name="items[@indexName].description"
+                type="text"
+                value="@value"
+                required
+                minlength="@MinStrLen"
+                maxlength="@MaxStrLen"
+            >
             <button class="addItemButton btn btn-secondary ms-1" type="button">+</button>
             <button class="removeItemButton btn btn-secondary ms-1" type="button">-</button>
         </li>
@@ -54,7 +63,15 @@
 <form id="todoList" method="POST" class="mb-3">
     <div>
         <label class="form-label" for="title">Title</label>
-        <input class="form-control" type="text" name="title" value="@Model?.Title">
+        <input
+            class="form-control"
+            type="text"
+            name="title"
+            required
+            minlength="@MinStrLen"
+            maxlength="@MaxStrLen"
+            value="@Model?.Title"
+        >
     </div>
     <label class="form-label">Items</label>
     <div class="mb-3">

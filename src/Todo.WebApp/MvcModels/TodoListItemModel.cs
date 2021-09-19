@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using static Todo.WebApp.MvcModels.ValidationConstants;
 
 namespace Todo.WebApp.MvcModels
 {
@@ -10,8 +11,8 @@ namespace Todo.WebApp.MvcModels
     public class TodoListItemModel
     {
         [Required(ErrorMessage = "Cannot be empty or whitespace only")]
-        [MinLength(3, ErrorMessage = "Must be at least 3 characters")]
-        [MaxLength(1000, ErrorMessage = "Cannot exceed 1000 characters")]
+        [MinLength(MinStrLen, ErrorMessage = MinStrError)]
+        [MaxLength(MaxStrLen, ErrorMessage = MaxStrError)]
         public string Description { get; set; }
     }
 }
