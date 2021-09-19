@@ -11,17 +11,16 @@
 @{
     void ListItemHtml(string value="", string indexName="")
     {
-        <div class="itemContainer">
+        <li class="itemContainer list-group-item d-flex align-items-end">
             <input class="itemIdx" type="hidden" name="items.Index" value="@indexName" />
-            <input class="itemDesc" name="items[@indexName].description" type="text" value="@value">
-            <button class="addItemButton" type="button">+</button>
-            <button class="removeItemButton" type="button">-</button>
-        </div>
+            <input class="itemDesc form-control" name="items[@indexName].description" type="text" value="@value">
+            <button class="addItemButton btn btn-secondary ms-1" type="button">+</button>
+            <button class="removeItemButton btn btn-secondary ms-1" type="button">-</button>
+        </li>
     }
 }
 
 @section pageHead {
-<link rel="stylesheet" href="/css/todolist-form.css">
 <meta name="startIndex" content="@(Model?.Items?.Count ?? 1)">
 <script src="/js/todolist-form.js"></script>
 <template id="todo-item-template">
@@ -44,20 +43,34 @@
 }
 
 
-<form id="todoList" method="POST">
-    <label for="title">Title</label>
-    <input name="title" type="text" value="@Model?.Title">
-    <label>Items</label>
-    @if (Model?.Items?.Any() ?? false)
-    {
-        foreach (var i in Model.Items.Select((item, idx) => (item, idx)))
+<h1 class="mb-3">
+    @if(null == Model) {
+        @: Create new list
+    }
+    else {
+        @: Edit list
+    }
+</h1>
+<form id="todoList" method="POST" class="mb-3">
+    <div>
+        <label class="form-label" for="title">Title</label>
+        <input class="form-control" type="text" name="title" value="@Model?.Title">
+    </div>
+    <label class="form-label">Items</label>
+    <div class="mb-3">
+        <ul class="list-group">
+        @if (Model?.Items?.Any() ?? false)
         {
-            ListItemHtml(i.item, "idx" + i.idx);
+            foreach (var i in Model.Items.Select((item, idx) => (item, idx)))
+            {
+                ListItemHtml(i.item, "idx" + i.idx);
+            }
         }
-    }
-    else
-    {
-        ListItemHtml(indexName: "idx0");
-    }
-    <input type="submit" value="@ViewData[SubmitOperationName]">
+        else
+        {
+            ListItemHtml(indexName: "idx0");
+        }
+        </ul>
+    </div>
+    <input class="btn btn-primary" type="submit" value="@ViewData[SubmitOperationName]">
 </form>
