@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static Todo.WebApp.MvcModels.ValidationConstants;
 
 namespace Todo.WebApp.MvcModels
@@ -22,9 +23,10 @@ namespace Todo.WebApp.MvcModels
         [MaxLength(MaxListLen, ErrorMessage = MaxListError)]
         public List<TodoListItemModel> Items { get; set; }
 
+        [BindNever]
         public IEnumerable<string> ItemDescriptions
         {
-            get => this.Items.Select(i => i.Description);
+            get => this.Items?.Select(i => i.Description) ?? Enumerable.Empty<string>();
         }
     }
 }
